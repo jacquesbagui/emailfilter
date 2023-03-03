@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <title>Import Emails</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+  rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+<script src="https://cdn.tailwindcss.com/3.2.4"></script>
+</head>
+<body class="bg-gray-200">
+    <div class="container mx-auto py-10">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="bg-red-500 text-white p-4 mb-4">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% if download %}
+        <div class="bg-green-500 text-white p-4 mb-4">
+            <p>Le fichier a été téléchargé avec succès.</p>
+        </div>
+        {% endif %}
+        <h1 class="text-2xl font-bold mb-4">List Emails Filter </h1>
+        <form action="/export" method="post" enctype="multipart/form-data" class="mb-4">
+            <div class="flex">
+                <label for="file" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-l">
+                    Choisir un fichier
+                </label>
+                <input type="file" id="file" name="file" accept=".txt" class="hidden">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r">
+                    filter
+                </button>
+            </div>
+        </form>
+        {% if domains and domains is not none %}
+        <h2 class="text-xl font-bold mb-2">Domaines triés par nombre d'e-mails</h2>
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Domaine</th>
+                    <th class="px-4 py-2">Nombre d'e-mails</th>
+                    <th class="px-4 py-2">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, row in domains %}
+                <tr>
+                    <td class="border px-4 py-2">{{ index }}</td>
+                    <td class="border px-4 py-2">{{ row|length }}</td>
+                    {% if row|length > 0 %}
+                    <td class="border px-4 py-2">
+                         <button onclick="downloadText('{{ row|join(',') }}', '{{ index }}.txt')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Télécharger
+                        </button>
+                    </td>
+                    {% else %}
+                    <td class="border px-4 py-2"></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>
+<script>
+/** pass data and download file csv **/
+function downloadText(data, filename) 
+{
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data.split(',').join('\n')));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+</script>
