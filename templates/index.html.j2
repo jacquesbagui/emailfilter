@@ -30,15 +30,18 @@
         {% endif %}
         <h1 class="text-2xl font-bold mb-4">List Emails Filter </h1>
         <form action="/export" method="post" enctype="multipart/form-data" class="mb-4">
-            <div class="flex">
-                <label for="file" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-l">
-                    Choisir un fichier
-                </label>
-                <input type="file" id="file" name="file" accept=".txt" class="hidden">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r">
-                    filter
-                </button>
-            </div>
+            <div class="mb-4">
+				<label class="block text-gray-700 font-bold mb-2" for="file">Fichier :</label>
+				<input type="file" name="file" id="file" class="border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+			</div>
+
+			<div class="mb-4">
+				<label class="block text-gray-700 font-bold mb-2" for="column_name">Nom de la colonne :</label>
+				<input type="text" name="column_name" id="column_name" class="border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+			</div>
+			<div class="mb-4">
+				<button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Extraire les adresses e-mail</button>
+			</div>
         </form>
         {% if domains and domains is not none %}
         <h2 class="text-xl font-bold mb-2">Domaines triés par nombre d'e-mails</h2>
