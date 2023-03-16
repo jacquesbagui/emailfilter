@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Téléchargement des emails</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+  rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+<script src="https://cdn.tailwindcss.com/3.2.4"></script>
+</head>
+<body class="bg-gray-200">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8">Téléchargement des emails par domaine</h1>
+        {% if domains and domains is not none %}
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Domaine</th>
+                    <th class="px-4 py-2">Nombre d'e-mails</th>
+                    <th class="px-4 py-2">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, row in domains.items() %}
+                <tr>
+                    <td class="border px-4 py-2">{{ index }}</td>
+                    <td class="border px-4 py-2">{{ row|length }}</td>
+                    {% if row|length > 0 %}
+                    <td class="border px-4 py-2">
+                        <a href="{{ url_for('download', domain=index) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Télécharger</a>
+                    </td>
+                    {% else %}
+                    <td class="border px-4 py-2"></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    
+    </div>
+</body>
+</html>
